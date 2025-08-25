@@ -1,10 +1,6 @@
 
 
-# PostScript
-
-<p align="center">
-	<img src="public/uploads/herobg.avif" alt="PostScript Banner" width="100%"/>
-</p>
+## PostScript
 
 <p align="center">
 	<b>A modern, full-stack social blogging platform</b><br>
