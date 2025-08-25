@@ -1,0 +1,33 @@
+<div class="create-post-card">
+    <div class="form-icon">
+        <i class="fa-solid fa-pen-to-square"></i>
+    </div>
+    <h2>Edit Post</h2>
+    <form action="/edit-post/<%= post.slug %>" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" id="title" name="title" value="<%= post.title %>" required>
+        </div>
+        <div class="form-group">
+            <label for="content">Content</label>
+            <div id="quill-editor" style="height: 250px;"></div>
+            <textarea id="content" name="content" style="height:0;opacity:0;position:absolute;pointer-events:none;" tabindex="-1"><%= post.content %></textarea>
+        </div>
+        <div class="form-group">
+            <label for="tags">Tags (comma separated)</label>
+            <input type="text" id="tags" name="tags" value="<%= post.tags.join(', ') %>">
+        </div>
+        <div class="form-group upload-preview">
+            <label for="image">Upload New Image</label>
+            <input type="file" id="image" name="image" accept="image/*">
+            <% if (post.image) { %>
+                <div class="upload-preview">
+                    <span style="font-size:0.95rem;color:var(--secondary-color);">Current Image:</span><br>
+                    <img src="<%= post.image %>" alt="<%= post.title %>">
+                </div>
+            <% } %>
+        </div>
+        <button type="submit" class="btn"><i class="fa-solid fa-floppy-disk"></i> Update Post</button>
+        <script src="/js/quill-init.js"></script>
+    </form>
+</div>

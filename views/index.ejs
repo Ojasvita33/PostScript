@@ -1,0 +1,69 @@
+<section class="hero-section">
+    <div class="hero-bg-image"></div>
+    <div class="hero-overlay-content">
+        <h1>Welcome to PostScript</h1>
+        <p>A place where every story finds its voice. Dive into our collection of insightful blogs and share your own.</p>
+        <a href="/all-posts" class="btn">Browse All Blogs</a>
+    </div>
+</section>
+
+<section class="spotlight-section">
+    <div class="container">
+        <div class="spotlight-header">
+            <h1>Spotlight Stories</h1>
+        </div>
+        <div class="spotlight-grid">
+            <% if (posts.length > 0) { %>
+                <% posts.slice(0, 3).forEach(post => { 
+                    let isLiked = false;
+                    if (user && post.likes) {
+                        isLiked = post.likes.some(like => 
+                            like._id?.toString() === user._id.toString() || 
+                            like.toString() === user._id.toString()
+                        );
+                    }
+                %>
+                    <div class="spotlight-card">
+                        <% if (post.image) { %>
+                            <img src="<%= post.image %>" alt="<%= post.title %>">
+                        <% } %>
+                        <div class="spotlight-card-content">
+                                                        <p class="author" style="display:flex;align-items:center;gap:0.5em;">
+                                                            <% if (post.author && post.author.avatar && post.author.avatar.length > 0) { %>
+                                                                <img src="<%= post.author.avatar %>" alt="<%= post.author.username %> avatar" style="width:28px;height:28px;border-radius:50%;object-fit:cover;vertical-align:middle;">
+                                                            <% } else if (post.author && post.author.username) { %>
+                                                                <span class="avatar" style="width:28px;height:28px;border-radius:50%;background:#eee;display:inline-flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:700;vertical-align:middle;">
+                                                                    <%= post.author.username.charAt(0).toUpperCase() %>
+                                                                </span>
+                                                            <% } %>
+                                                            By <%= post.author ? post.author.username : 'Unknown' %>
+                                                        </p>
+                            <h3><%= post.title %></h3>
+                            <div class="preview-text"><%- post.content.substring(0, 100) %>...</div>
+                            <div class="spotlight-card-footer">
+                                <a href="/post/<%= post.slug %>" class="btn">Read More</a>
+
+                                <% if (user) { %>
+                                    <button 
+                                        type="button" 
+                                        class="like-btn <%= isLiked ? 'liked' : '' %>" 
+                                        data-slug="<%= post.slug %>">
+                                        <i class="<%= isLiked ? 'fas' : 'far' %> fa-heart"></i>
+                                        <span class="like-count"><%= post.likes.length %></span>
+                                    </button>
+                                <% } else { %>
+                                    <span class="like-btn disabled">
+                                        <i class="far fa-heart"></i>
+                                        <span class="like-count"><%= post.likes.length %></span>
+                                    </span>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <p>No posts found. Be the first to create one!</p>
+            <% } %>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,24 @@
+# .gitignore
+
+# Node modules
+/node_modules
+
+# Environment variables
+.env
+.env.*
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Build output
+dist/
+coverage/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Uploaded files
+/public/uploads/

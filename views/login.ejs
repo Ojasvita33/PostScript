@@ -1,0 +1,35 @@
+<% if (typeof error !== 'undefined' && error) { %>
+    <div class="alert-popup">
+        <p><%= error %></p>
+        <button class="close-btn">&times;</button>
+    </div>
+<% } %>
+
+<div class="container" style="max-width: 400px; background: var(--card-bg-color); padding: 2rem; border-radius: 8px; border: 1px solid var(--border-color); box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+  <h1 style="text-align:center; margin-bottom: 1.5rem;">Login</h1>
+  <form action="/login" method="POST">
+    <div>
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" required>
+    </div>
+    <div>
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required>
+    </div>
+    <button type="submit" class="btn" style="width: 100%;">Login</button>
+    <p style="text-align:right; margin-top: 0.5rem;">
+      <a href="/forgot-password">Forgot Password?</a>
+    </p>
+  </form>
+  <p style="text-align:center; margin-top: 1rem;">Don't have an account? <a href="/signup">Sign Up</a></p>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const closeBtn = document.querySelector('.close-btn');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', function() {
+                document.querySelector('.alert-popup').style.display = 'none';
+            });
+        }
+    });
+</script>

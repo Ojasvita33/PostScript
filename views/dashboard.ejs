@@ -1,0 +1,52 @@
+
+<div class="main-container">
+    <section class="profile-card" style="display:flex;align-items:center;gap:2rem;margin-bottom:2rem;">
+        <div>
+            <% if (user.avatar && user.avatar.length > 0) { %>
+                <img src="<%= user.avatar %>" alt="<%= user.username %> avatar" style="width:90px;height:90px;border-radius:50%;object-fit:cover;border:2px solid #eee;">
+            <% } else { %>
+                <div class="avatar" style="width:90px;height:90px;border-radius:50%;background:#eee;display:flex;align-items:center;justify-content:center;font-size:2.5rem;font-weight:700;">
+                    <%= user.username.charAt(0).toUpperCase() %>
+                </div>
+            <% } %>
+        </div>
+        <div>
+            <h2 style="margin-bottom:0.2em;"><%= user.username %></h2>
+            <p style="margin:0.2em 0;color:#888;"><i class="fas fa-envelope"></i> <%= user.email %></p>
+            <% if (user.bio && user.bio.length > 0) { %>
+                <p style="margin:0.2em 0 0.5em 0;"><%= user.bio %></p>
+            <% } else { %>
+                <p style="margin:0.2em 0 0.5em 0;color:#aaa;">No bio yet.</p>
+            <% } %>
+            <a href="/edit-profile" class="btn" style="margin-top:0.5em;"><i class="fas fa-user-edit"></i> Edit Profile</a>
+        </div>
+    </section>
+    <header class="dashboard-header">
+        <h1>Welcome, <%= username %></h1>
+        <p class="subtitle">Manage all your posts from here.</p>
+        <a href="/new-post" class="btn"><i class="fas fa-plus"></i> Create New Post</a>
+    </header>
+
+    <section class="dashboard-posts">
+        <% if (posts.length > 0) { %>
+            <div class="dashboard-grid">
+                <% posts.forEach(post => { %>
+                    <div class="dashboard-card">
+                        <h2 class="post-title"><%= post.title %></h2>
+                        <p class="post-date"><i class="fas fa-calendar-alt"></i> <%= post.createdAt.toLocaleDateString() %></p>
+                        <div class="post-snippet"><%- post.content.substring(0, 150) %>...</div>
+                        <div class="post-actions">
+                            <a href="/post/<%= post.slug %>" class="btn"><i class="fas fa-book-open"></i> Read More</a>
+                            <a href="/edit-post/<%= post.slug %>" class="btn active"><i class="fas fa-edit"></i> Edit</a>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        <% } else { %>
+            <div class="empty-state">
+                <p><i class="fas fa-folder-open"></i> You have not created any posts yet.</p>
+                <a href="/new-post" class="btn"><i class="fas fa-plus"></i> Create your first post</a>
+            </div>
+        <% } %>
+    </section>
+</div>

@@ -1,0 +1,36 @@
+<div class="container all-posts-container">
+    <h1>All Posts</h1>
+        <div class="all-posts-grid">
+            <% if (posts.length > 0) { %>
+                <% posts.forEach(post => { %>
+                    <div class="post-card horizontal-card">
+                        <% if (post.image) { %>
+                            <div class="post-image">
+                                <img src="<%= post.image %>" alt="<%= post.title %>">
+                            </div>
+                        <% } %>
+                        <div class="post-content-area">
+                            <h2 class="post-title"><%= post.title %></h2>
+                            <p class="post-meta">By <%= post.author ? post.author.username : 'Unknown' %> on <%= post.createdAt.toLocaleDateString() %></p>
+                            <div class="post-snippet preview-ellipsis"><%- post.content.replace(/<[^>]+>/g, '').substring(0, 220) %>...</div>
+                            <a href="/post/<%= post.slug %>" class="btn btn-read-more">Read More</a>
+                        </div>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <p>No posts found. Be the first to create one!</p>
+            <% } %>
+        </div>
+    
+    <div class="pagination">
+        <% if (currentPage > 1) { %>
+            <a href="/all-posts?page=<%= currentPage - 1 %>" class="btn">Previous</a>
+        <% } %>
+        <% for (let i = 1; i <= totalPages; i++) { %>
+            <a href="/all-posts?page=<%= i %>" class="btn <%= i === currentPage ? 'active' : '' %>"><%= i %></a>
+        <% } %>
+        <% if (currentPage < totalPages) { %>
+            <a href="/all-posts?page=<%= currentPage + 1 %>" class="btn">Next</a>
+        <% } %>
+    </div>
+</div>

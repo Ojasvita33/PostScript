@@ -1,0 +1,123 @@
+<div class="main-container"> 
+    <article class="single-post">
+        <header class="post-header">
+            <h1 class="post-title"><i class="fas fa-file-alt"></i> <%= post.title %></h1>
+            <div class="post-meta">
+                <span><i class="fas fa-user"></i> <%= post.author.username %></span>
+                <span><i class="fas fa-calendar-alt"></i> <%= post.createdAt.toLocaleDateString() %></span>
+            </div>
+        </header>
+
+        <% if (post.image) { %>
+    <div class="post-image">
+        <img src="<%= post.image %>" alt="<%= post.title %>">
+    </div>
+<% } %>
+
+
+
+
+        <div class="post-content">
+            <div><%- post.content %></div>
+            <% if (post.tags && post.tags.length > 0) { %>
+              <div class="tags-container" style="margin: 1.1rem 0 0.2rem 0;">
+                <% post.tags.forEach(tag => { %>
+                  <a href="/tags/<%= tag %>" class="tag-link">#<%= tag %></a>
+                <% }) %>
+              </div>
+            <% } %>
+        </div>
+
+        <footer class="post-footer">
+            <div class="post-actions">
+                <a href="/" class="btn"><i class="fas fa-arrow-left"></i> Back to Posts</a>
+
+                <% 
+                    let isLiked = false;
+                    if (user && post.likes) {
+                        isLiked = post.likes.some(like => 
+                            like._id?.toString() === user._id.toString() || 
+                            like.toString() === user._id.toString()
+                        );
+                    }
+                %>
+
+                <% if (user) { %>
+                    <button 
+                        type="button" 
+                        class="like-btn <%= isLiked ? 'liked' : '' %>" 
+                        data-slug="<%= post.slug %>">
+                        <i class="<%= isLiked ? 'fas' : 'far' %> fa-heart"></i>
+                        <span class="like-count"><%= post.likes.length %></span>
+                    </button>
+                <% } else { %>
+                    <span class="like-btn disabled">
+                        <i class="far fa-heart"></i>
+                        <span class="like-count"><%= post.likes.length %></span>
+                    </span>
+                <% } %>
+
+                <% if (user && user.username === post.author.username) { %>
+                    <a href="/edit-post/<%= post.slug %>" class="btn active">
+                        <i class="fas fa-edit"></i> Edit Post
+                    </a>
+                    <form action="/delete-post/<%= post.slug %>" method="POST" onsubmit="return confirm('Delete this post?');" style="display:inline;">
+                        <button type="submit" class="btn btn-delete">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </form>
+                <% } %>
+            </div>
+        </footer>
+    </article>
+
+    <!-- Comments Section -->
+<section class="comments">
+  <h2>Comments (<%= post.comments.length %>)</h2>
+
+  <div class="comments-list">
+    <% if (post.comments.length > 0) { %>
+      <% post.comments.forEach(comment => { %>
+        <div class="comment-item">
+          <!-- Avatar with safe fallback -->
+          <% if (comment.author && comment.author.avatar && comment.author.avatar.length > 0) { %>
+            <img src="<%= comment.author.avatar %>" alt="<%= comment.author.username %> avatar" class="avatar" style="width:42px;height:42px;border-radius:50%;object-fit:cover;">
+          <% } else { %>
+            <div class="avatar">
+              <%= ((comment.author?.username || 'U')[0]).toUpperCase() %>
+            </div>
+          <% } %>
+
+          <!-- Comment Body -->
+          <div class="comment-body">
+            <div class="comment-meta">
+              <strong class="comment-author">
+                <%= comment.author?.username || 'Unknown' %>
+              </strong>
+              <span class="comment-time">
+                <%= comment.createdAt ? new Date(comment.createdAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : '' %>
+              </span>
+            </div>
+            <div class="comment-text"><%= comment.content %></div>
+          </div>
+        </div>
+      <% }) %>
+    <% } else { %>
+      <p class="muted">No comments yet. Be the first to comment.</p>
+    <% } %>
+  </div>
+
+  <% if (user) { %>
+    <form class="comment-form" action="/post/<%= post.slug %>/comment" method="POST">
+      <div class="comment-input-row">
+        <div class="avatar small"><%= ((user.username || 'U')[0]).toUpperCase() %></div>
+        <textarea name="content" rows="3" placeholder="Write a thoughtful comment..." required></textarea>
+      </div>
+      <div class="comment-actions">
+        <button type="submit" class="btn">Post Comment</button>
+      </div>
+    </form>
+  <% } else { %>
+    <p><a href="/login">Login</a> to comment.</p>
+  <% } %>
+</section>

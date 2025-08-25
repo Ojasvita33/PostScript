@@ -1,0 +1,32 @@
+<div class="container all-posts-container">
+    <h1>Posts tagged with #<%= tag %></h1>
+    <div class="all-posts-grid">
+        <% if (posts.length > 0) { %>
+            <% posts.forEach(post => { %>
+                <div class="post-card horizontal-card">
+                    <% if (post.image) { %>
+                        <div class="post-image">
+                            <img src="<%= post.image %>" alt="<%= post.title %>">
+                        </div>
+                    <% } %>
+                    <div class="post-content-area">
+                        <h2 class="post-title"><%= post.title %></h2>
+                        <p class="post-meta">By <%= post.author ? post.author.username : 'Unknown' %> on <%= post.createdAt.toLocaleDateString() %></p>
+                        <div class="post-snippet preview-ellipsis"><%- post.content.replace(/<[^>]+>/g, '').substring(0, 180) %>...</div>
+                        <% if (post.tags && post.tags.length > 0) { %>
+                            <div class="tags-container" style="margin: 0.5rem 0 0.7rem 0;">
+                                <% post.tags.forEach(tag => { %>
+                                    <a href="/tags/<%= tag %>" class="tag-link">#<%= tag %></a>
+                                <% }) %>
+                            </div>
+                        <% } %>
+                        <a href="/post/<%= post.slug %>" class="btn btn-read-more">Read More</a>
+                    </div>
+                </div>
+            <% }) %>
+        <% } else { %>
+            <p>No posts found for this tag.</p>
+        <% } %>
+    </div>
+    <a href="/" class="btn" style="margin-top:2rem;">Go Back</a>
+</div>
