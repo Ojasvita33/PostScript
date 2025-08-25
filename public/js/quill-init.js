@@ -1,5 +1,3 @@
-// Quill editor initialization for post forms
-
 document.addEventListener('DOMContentLoaded', function () {
   var quillEl = document.getElementById('quill-editor');
   if (quillEl) {
