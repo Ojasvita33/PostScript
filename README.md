@@ -1,6 +1,6 @@
 
 
-## PostScript
+<h2 align="center> PostScript </h2>
 
 <p align="center">
 	<b>A modern, full-stack social blogging platform</b><br>
